@@ -77,4 +77,3 @@ const metro_cities = [
 }
 
 module.exports = getZone
-

@@ -297,6 +297,8 @@ const courierMapping = {
 async function calculateShippingPrice(availableCouriers, zone, weight, orderValue, isCOD) {
   const results = [];
   let temp = zone;
+  let GST=0;
+  let total_price=0
 
   availableCouriers.forEach(courier=> {
     // Step 1: Map external courier name to Excel chart name
@@ -316,9 +318,8 @@ async function calculateShippingPrice(availableCouriers, zone, weight, orderValu
       // console.log(chartData);
       
     if (chartData) {
-      let totalFreight = chartData[temp];
+      let totalFreight = chartData[temp] + 20;
       // console.log(`price -----${totalFreight}`);
-      
       
       // Step 4: Add COD charges if applicable
       if (isCOD) {
@@ -329,6 +330,9 @@ async function calculateShippingPrice(availableCouriers, zone, weight, orderValu
         );
         totalFreight += codCharges;
       }
+
+       GST = Math.ceil(totalFreight * 0.18);
+       total_price= totalFreight + GST;
       
       // Step 5: Prepare final object
       results.push({
@@ -339,11 +343,15 @@ async function calculateShippingPrice(availableCouriers, zone, weight, orderValu
         freight_mode: courier.freight_mode,
         max_weight: courier.max_weight,
         min_weight: courier.min_weight,
-        total_freight:Math.ceil( totalFreight ) , // Round to 2 decimal
+        total_freight:Math.ceil( totalFreight ) , 
+        GST:GST,
+        total_Price_GST_Included:total_price,
         edd: courier.edd,
         epd: null
       });
-      totalFreight = 0
+      totalFreight = 0;
+      GST=0;
+      total_price=0
     }
   });
   
@@ -354,4 +362,4 @@ async function calculateShippingPrice(availableCouriers, zone, weight, orderValu
 
 
 
-module.exports = calculateShippingPrice
+module.exports = calculateShippingPrice;
