@@ -3,7 +3,7 @@ const cors = require('cors');
 
 const app = e();
 app.use(cors({
-    origin:['http://localhost:3000', 'https://tatamart.in']
+    origin:['https://ms-logistic.in']
 }))
 app.use(e.json());
 app.use(e.urlencoded({extended:true}));
