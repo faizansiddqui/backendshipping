@@ -1,4 +1,5 @@
-const {getWeightSlab,calculateCODCharges} = require('./services')
+
+import { getWeightSlab, calculateCODCharges } from './services.js';
 
 const excelChart = {
   "XpressBees": {
@@ -8,8 +9,9 @@ const excelChart = {
       "1 Kgs": { "z_a": 82.8, "z_b": 82.8, "z_c": 82.8, "z_d": 82.8, "z_e": 82.8, "cod_charges": 0, "cod_percentage": 0 },
       "2 Kgs": { "z_a": 66.7, "z_b": 78.2, "z_c": 90.85, "z_d": 98.9, "z_e": 115, "cod_charges": 29.9, "cod_percentage": 0.01495 },
       "5 Kgs": { "z_a": 115, "z_b": 120.75, "z_c": 143.75, "z_d": 155.25, "z_e": 215.05, "cod_charges": 29.9, "cod_percentage": 0.01495 },
-      "10 Kgs": { "z_a": 178.25, "z_b": 201.25, "z_c": 230, "z_d": 235.75, "z_e": 327.75, "cod_charges": 29.9, "cod_percentage": 0.01495 }
+      "10 Kgs": { "z_a": 178.25, "z_b": 201.25, "z_c": 230, "z_d": 235.75, "z_e": 327.75, "cod_charges": 29.9, "cod_percentage": 0.01495,  }
     },
+
     "Air": {
       "0.25": { "z_a": 29.9, "z_b": 33.35, "z_c": 37.95, "z_d": 40.25, "z_e": 59.8, "cod_charges": 27.6, "cod_percentage": 0.0138 },
       "0.5": { "z_a": 33.264, "z_b": 36.96, "z_c": 54.208, "z_d": 59.136, "z_e": 77.616, "cod_charges": 29.5, "cod_percentage": 0.015 },
@@ -362,4 +364,4 @@ async function calculateShippingPrice(availableCouriers, zone, weight, orderValu
 
 
 
-module.exports = calculateShippingPrice;
+export default calculateShippingPrice;

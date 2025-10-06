@@ -1,14 +1,33 @@
-const e = require('express');
+const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const passport = require('passport');
+const session = require('express-session');
+const dotenv = require('dotenv');
 
-const app = e();
+dotenv.config();
+
+const app = express();
+
+// ---------- Middlewares ----------
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
 app.use(cors({
-    origin:['http://localhost:3000', 'https://tatamart.in']
-}))
-app.use(e.json());
-app.use(e.urlencoded({extended:true}));
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  credentials: true,
+}));
 
+// ✅ session setup
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'fallback_secret_key',
+  resave: false,
+  saveUninitialized: true,
+}));
 
-const router = e.Router();
+// ✅ passport setup
+app.use(passport.initialize());
+app.use(passport.session());
 
-module.exports ={app,router};
+module.exports = { app };

@@ -30,7 +30,6 @@ const metro_cities = [
   "400031",
   "400034",
   "400035",
-
   // Delhi/New Delhi PIN codes
   "110001",
   "110002",
@@ -76,4 +75,4 @@ const metro_cities = [
   }
 }
 
-module.exports = getZone
+export default getZone;

@@ -1,50 +1,35 @@
+const dotenv = require('dotenv');
+const cors = require('cors');
 const { app } = require('./app');
-const calculateShippingPrice = require('./rapidShyp/calculateRate');
-const getZone = require('./rapidShyp/selectZone');
+const passportConfig = require('./config/passport'); // This configures passport
+const authRoutes = require('./routes/authRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
-// Default GET route
-app.get('/', (req, res) => {
-    res.send('hello courier Services');
-});
+dotenv.config();
 
-// POST route for courier order
-app.post('/order',async (req, res) => {
-    const { Pickup_pincode, Delivery_pincode, cod, total_order_value, weight } = req.body;
+const PORT = process.env.PORT || 5000;
 
-    try {
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
+  console.error("Missing SUPABASE_URL or SUPABASE_ANON_KEY in env");
+  process.exit(1);
+}
 
-      const avail_services =  await fetch('https://api.rapidshyp.com/rapidshyp/apis/v1/serviceabilty_check',{
-    method:"POST",
-      headers:{
-        "rapidshyp-token":"4f542cb1ee499eba09448bd8b5bf6150aa05b85e88136a15ef7b73c4315132fd",
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-         Pickup_pincode,
-        Delivery_pincode,
-        cod,
-        total_order_value:parseInt(total_order_value),
-        weight
-      })
-     })
+// CORS setup
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
-     const data = await avail_services.json()
-    const zone  = getZone(Pickup_pincode,Delivery_pincode)
-    
-     const result = await calculateShippingPrice(data.serviceable_courier_list,zone,weight,parseInt(total_order_value),cod);
+// Initialize passport (configured in config/passport.js)
+app.use(passportConfig.initialize());
 
-     res.status(200).json(result);
-      
-    } catch (error) {
+// Routes
+app.use(authRoutes); // Auth routes (no prefix)
+app.use(orderRoutes); // Order routes (no prefix)
 
-      res.json(new Error("something went wrong:",error))
-      
-    }
-   
-    
-
-});
-
-app.listen(5000, () => {
-    console.log("PORT:5000");
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on PORT: ${PORT}`);
 });
