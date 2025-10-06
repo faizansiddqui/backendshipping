@@ -9,7 +9,6 @@ dotenv.config();
 
 const app = express();
 
-// ---------- Middlewares ----------
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -19,14 +18,12 @@ app.use(cors({
   credentials: true,
 }));
 
-// ✅ session setup
 app.use(session({
   secret: process.env.SESSION_SECRET || 'fallback_secret_key',
   resave: false,
   saveUninitialized: true,
 }));
 
-// ✅ passport setup
 app.use(passport.initialize());
 app.use(passport.session());
 
