@@ -1,11 +1,10 @@
 const express = require('express');
 const calculateShippingPrice = require('../rapidShyp/calculateRate');
 const getZone = require('../rapidShyp/selectZone');
-const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
 
-router.post("/order", authMiddleware, async (req, res) => {
+router.post("/order", async (req, res) => {
   const { Pickup_pincode, Delivery_pincode, cod, total_order_value, weight } = req.body;
 
   try {

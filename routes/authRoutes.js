@@ -132,7 +132,7 @@ router.get("/auth/google/callback", passport.authenticate("google", { failureRed
 
     if (error) {
       console.error(error);
-      return res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/login?error=auth_failed`);
+      return res.redirect(`${process.env.FRONTEND_URL || 'https://ms-logistic.in'}/login?error=auth_failed`);
     }
 
     const accessToken = data.session?.access_token;
@@ -146,11 +146,11 @@ router.get("/auth/google/callback", passport.authenticate("google", { failureRed
     res.cookie("sb_access_token", accessToken, { ...cookieOption, maxAge: expiresIn * 1000 });
     res.cookie("sb_refresh_token", refreshToken, { ...cookieOption, maxAge: 15 * 24 * 60 * 60 * 1000 });
 
-    const redirectTo = process.env.FRONTEND_URL ? `${process.env.FRONTEND_URL}/callback` : 'http://localhost:3000/callback';
+    const redirectTo = process.env.FRONTEND_URL ? `${process.env.FRONTEND_URL}/callback` : 'https://ms-logistic.in/callback';
     res.redirect(redirectTo);
   } catch (err) {
     console.error(err);
-    res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/login?error=server_error`);
+    res.redirect(`${process.env.FRONTEND_URL}/login?error=server_error`);
   }
 });
 
