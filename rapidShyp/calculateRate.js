@@ -364,4 +364,4 @@ async function calculateShippingPrice(availableCouriers, zone, weight, orderValu
 
 
 
-module.export = calculateShippingPrice;
+module.exports = calculateShippingPrice;
