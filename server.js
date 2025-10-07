@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 const cors = require('cors');
 const { app } = require('./app');
-const passportConfig = require('./config/passport'); // This configures passport
+const passportConfig = require('./config/passport'); 
 const authRoutes = require('./routes/authRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 

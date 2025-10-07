@@ -75,4 +75,4 @@ const metro_cities = [
   }
 }
 
-export default getZone;
+module.exports = getZone;

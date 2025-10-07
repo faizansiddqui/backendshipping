@@ -1,5 +1,5 @@
 
-import { getWeightSlab, calculateCODCharges } from './services.js';
+const { getWeightSlab, calculateCODCharges } = require('./services.js');
 
 const excelChart = {
   "XpressBees": {
@@ -364,4 +364,4 @@ async function calculateShippingPrice(availableCouriers, zone, weight, orderValu
 
 
 
-export default calculateShippingPrice;
+module.export = calculateShippingPrice;
