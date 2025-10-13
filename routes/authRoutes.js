@@ -1,10 +1,13 @@
 const express = require('express');
 const passport = require('../config/passport');
 const supabaseAdmin = require('../config/supabase'); // adjust path
+const supabase = require('../config/supabase');
 
 const router = express.Router();
 
 const isProd = process.env.NODE_ENV === 'production';
+
+
 
 const cookieOption = {
   httpOnly: true,
@@ -22,7 +25,12 @@ router.post("/signup", async (req, res) => {
     return res.status(400).json({ error: "Email and password required" });
 
   try {
-    // Removed invalid getUser({email})—Supabase signUp handles duplicates
+
+    const userexist = supabase.auth.getUser(email);
+
+    if(userexist) return res.status(400).json({message: 'User already Exist'})
+
+        
     const { data, error } = await supabaseAdmin.auth.signUp({ email, password });
 
     if (error) {
@@ -116,7 +124,7 @@ router.get("/auth/google", passport.authenticate("google", {
 
 router.get("/auth/google/callback", passport.authenticate("google", { 
   failureRedirect: `${process.env.FRONTEND_URL || 'https://ms-logistic.in'}/login?error=auth_failed` 
-}), async (req, res) => {
+}), async (req, res) => { 
   try {
     if (!req.user?.idToken) {
       console.error("No idToken from Google");

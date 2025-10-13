@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('cors');
+
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const session = require('express-session');
@@ -8,15 +8,11 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
+const router = express.Router();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
-app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true,
-}));
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'fallback_secret_key',
@@ -27,4 +23,4 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-module.exports = { app };
+module.exports = { app,router };

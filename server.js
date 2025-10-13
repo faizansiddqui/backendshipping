@@ -4,6 +4,7 @@ const { app } = require('./app');
 const passportConfig = require('./config/passport'); 
 const authRoutes = require('./routes/authRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const createOrder = require('./routes/createOrder')
 
 dotenv.config();
 
@@ -14,9 +15,8 @@ if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
   process.exit(1);
 }
 
-// CORS setup
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: [process.env.FRONTEND_URL,"http://localhost:3000"],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -28,6 +28,8 @@ app.use(passportConfig.initialize());
 // Routes
 app.use(authRoutes); // Auth routes (no prefix)
 app.use(orderRoutes); // Order routes (no prefix)
+app.use(createOrder);
+
 
 // Start server
 app.listen(PORT, () => {
