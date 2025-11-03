@@ -1,9 +1,13 @@
 require('dotenv').config();
+const dns = require('dns');
+if (typeof dns.setDefaultResultOrder === 'function') {
+  dns.setDefaultResultOrder('ipv4first');
+}
 const { Sequelize, DataTypes, Op } = require('sequelize')
 
 
 const db = new Sequelize('postgresql://postgres:e6ATFohYFd8cRWSY@db.xcuaqiyzrgrtomculvww.supabase.co:5432/postgres',{
-     host: process.env.SUPABASE_URL,
+   
      port:5432,
      dialect: 'postgres',
   protocol: 'postgres',
@@ -21,7 +25,7 @@ try {
         console.log('supabase connect sucessfully');
     })
 
-    db.sync({alter:true,force:true})
+    db.sync({alter:true})
 } catch (error) {
 
     console.error('unable to connect supabase', error);
