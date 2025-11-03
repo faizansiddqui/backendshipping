@@ -4,8 +4,16 @@ const { Sequelize, DataTypes, Op } = require('sequelize')
 
 const db = new Sequelize('postgresql://postgres:e6ATFohYFd8cRWSY@db.xcuaqiyzrgrtomculvww.supabase.co:5432/postgres',{
      host: process.env.SUPABASE_URL,
-     dialect:'postgres',
-     port:5432
+     port:5432,
+     dialect: 'postgres',
+  protocol: 'postgres',
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false // Render requires SSL
+    }
+  },
+  logging: false,
 })
 
 try {
